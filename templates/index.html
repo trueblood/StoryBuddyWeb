@@ -8,7 +8,7 @@
     <p class="text-center">Enter a prompt to get a story response from the AI.</p>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form onsubmit="event.preventDefault(); fetchData();" class="mb-3">
+            <form onsubmit="event.preventDefault(); validateAndFetchData();" class="mb-3">
                 <div class="mb-3">
                     <label for="txtPrompt" class="form-label">Prompt:</label>
                     <input type="text" id="txtPrompt" class="form-control">
@@ -28,6 +28,7 @@
 </div>
 <script>
     async function fetchData() {
+        alert('In fetch data');
         showLoadingSpinner();
         const promptValue = document.getElementById('txtPrompt').value;
         const response = await fetch('/fetch_data', {
@@ -53,6 +54,13 @@
     function hideLoadingSpinner() {
         const spinnerContainer = document.getElementById('spinnerContainer');
         spinnerContainer.innerHTML = '';
+    }
+    function validateAndFetchData() {
+        if (grecaptcha.getResponse().length !== 0) {
+            fetchData();
+        } else {
+            alert('Please check the reCAPTCHA box.');
+        }
     }
 </script>
 {% endblock %}

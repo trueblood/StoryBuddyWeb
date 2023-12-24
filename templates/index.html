@@ -13,9 +13,12 @@
                     <label for="txtPrompt" class="form-label">Prompt:</label>
                     <input type="text" id="txtPrompt" class="form-control">
                 </div>
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+                <!-- reCAPTCHA widget -->
+                <div class="g-recaptcha" data-sitekey="6LcyVTspAAAAAH4IbNLwNEW-0-hnm-RCpzYWcgBJ"></div>
+                    <!-- /reCAPTCHA widget -->
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>  
             </form>
             <p class="text-center">Output from AI:</p>
             <div id="spinnerContainer" class="d-flex justify-content-center"></div>

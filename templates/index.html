@@ -8,10 +8,12 @@
     <p class="text-center">Enter a prompt to get a story response from the AI.</p>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form onsubmit="event.preventDefault(); validateAndFetchData();" class="mb-3">
+            <form onsubmit="event.preventDefault(); fetchData();" class="mb-3">
                 <div class="mb-3">
                     <label for="txtPrompt" class="form-label">Prompt:</label>
                     <input type="text" id="txtPrompt" class="form-control">
+                    <label for="txtResponseLength" class="form-label">Response Length:</label>
+                    <input type="text" id="txtResponseLength" class="form-control">
                 </div>
                 <!-- reCAPTCHA widget -->
                 <div class="g-recaptcha" data-sitekey="6LcyVTspAAAAAH4IbNLwNEW-0-hnm-RCpzYWcgBJ"></div>
@@ -26,22 +28,7 @@
         </div>
     </div>
 </div>
-<script>
-    async function fetchData() {
-        alert('In fetch data');
-        showLoadingSpinner();
-        const promptValue = document.getElementById('txtPrompt').value;
-        const response = await fetch('/fetch_data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ prompt: promptValue })
-        });
-        hideLoadingSpinner();
-        const data = await response.json();
-        document.getElementById('apiData').innerText = JSON.stringify(data);
-    }
+<script type="text/javascript">  
     function showLoadingSpinner() {
         const spinner = document.createElement('div');
         spinner.classList.add('spinner-border');
@@ -62,5 +49,28 @@
             alert('Please check the reCAPTCHA box.');
         }
     }
+    async function fetchData() {
+        showLoadingSpinner();
+        const promptValue = document.getElementById('txtPrompt').value;
+        const recaptchaResponse = grecaptcha.getResponse(); // Get the reCAPTCHA response
+        const responseLengthValue = document.getElementById('txtResponseLength').value;
+    
+        //const response = await fetch('http://192.168.1.53ss:5080/generate_story', {
+        const response = await fetch('http://75.187.70.207:5080/generate_story', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                prompt: promptValue,
+                recaptcha_response: recaptchaResponse, // Send the reCAPTCHA response to backend
+                max_length: responseLengthValue
+            })
+        });
+    
+        hideLoadingSpinner();
+        const data = await response.json();
+        document.getElementById('apiData').innerText = JSON.stringify(data);
+    }    
 </script>
 {% endblock %}
